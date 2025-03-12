@@ -1,0 +1,17 @@
+{
+  "name": "getting-started-with-threejs-main",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/three": "^0.146.0",
+    "three": "^0.148.0",
+    "three-pathfinding": "^1.1.0"
+  }
+}
