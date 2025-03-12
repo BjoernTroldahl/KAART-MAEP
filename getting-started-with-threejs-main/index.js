@@ -31,8 +31,25 @@ controls.enableDamping = true;
 controls.enablePan = true;
 controls.minDistance = 200;
 controls.maxDistance = 3000;
-controls.maxPolarAngle = Math.PI / 2 - 0.05; // prevent camera below ground
-controls.minPolarAngle = Math.PI / 4;        // prevent top down view
+controls.maxPolarAngle = Math.PI / 2; // allow view up to horizontal
+controls.minPolarAngle = 0; // allow exact top-down view
+
+// Store initial camera position for reset
+const initialCameraPosition = {
+    position: new THREE.Vector3(0, 1500, 1000),
+    target: new THREE.Vector3(0, 0, 0)
+};
+
+// Add reset camera function
+document.getElementById('resetCamera').addEventListener('click', () => {
+    camera.position.copy(initialCameraPosition.position);
+    controls.target.copy(initialCameraPosition.target);
+    controls.update();
+    navmesh.visible = false;
+    agentGroup2.visible = false;
+
+});
+
 controls.update();
 
 // LIGHTS
@@ -122,8 +139,8 @@ document.getElementById('button1').addEventListener('click', () => {
 document.getElementById('button2').addEventListener('click', () => {
     if (navmesh) {
         navmesh.visible = false;
+        agentGroup2.visible = true;
     }
-    agentGroup2.visible = true;
 });
 
 // Keep the click event listener for pathfinding, but simplified
