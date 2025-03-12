@@ -4,7 +4,7 @@ import { FBXLoader } from "jsm/loaders/FBXLoader.js";
 
 // SCENE
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xa8def0);
+scene.background = new THREE.Color(0xffffff);
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
