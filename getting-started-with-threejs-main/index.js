@@ -9,7 +9,7 @@ scene.background = new THREE.Color(0xa8def0);
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
-camera.position.set(0, 1500, 1000);
+camera.position.set(0, 700, 300);
 
 // RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -36,7 +36,7 @@ controls.minPolarAngle = 0; // allow exact top-down view
 
 // Store initial camera position for reset
 const initialCameraPosition = {
-    position: new THREE.Vector3(0, 1500, 1000),
+    position: new THREE.Vector3(0, 700, 300),
     target: new THREE.Vector3(0, 0, 0)
 };
 
@@ -54,10 +54,10 @@ controls.update();
 
 // LIGHTS
 const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
-hemiLight.position.set(0, 200, 0);
+hemiLight.position.set(0, 10, 0);
 scene.add(hemiLight);
 
-const dLight = new THREE.DirectionalLight('white', 0.1);
+const dLight = new THREE.DirectionalLight('white', 1);
 dLight.position.x = 20;
 dLight.position.y = 500;
 dLight.castShadow = true;
@@ -70,7 +70,7 @@ dLight.shadow.camera.top = d;
 dLight.shadow.camera.bottom = -d;
 scene.add(dLight);
 
-const aLight = new THREE.AmbientLight('white', 0.1);
+const aLight = new THREE.AmbientLight('white', 1);
 scene.add(aLight);
 
 // RESIZE HANDLER
@@ -83,16 +83,16 @@ function onWindowResize() {
 window.addEventListener('resize', onWindowResize);
 
 // AGENT 1
-const agentHeight1 = 40.0;
-const agentRadius1 = 20.0;
+const agentHeight1 = 15.0;
+const agentRadius1 = 5.0;
 const agent1 = new THREE.Mesh(
     new THREE.CylinderGeometry(agentRadius1, agentRadius1, agentHeight1), 
     new THREE.MeshPhongMaterial({ color: 'green' })
 );
-agent1.position.set(0, -27, 0); // Approximately at the navmesh height
+agent1.position.set(0, 0, 0); // Approximately at the navmesh height
 const agentGroup1 = new THREE.Group();
 agentGroup1.add(agent1);
-agentGroup1.position.set(0, 0, 500);
+agentGroup1.position.set(0, 0, 250);
 scene.add(agentGroup1);
 
 // AGENT 2
@@ -197,7 +197,7 @@ function move(delta) {
 const fbxloader = new FBXLoader();
 
 // Load navmesh first
-fbxloader.load('museum-navmesh.fbx', (object) => {
+fbxloader.load('1.fbx', (object) => {
     console.log("Navmesh loaded:", object);
     object.traverse((node) => {
         if (!navmesh && node.isMesh) {
