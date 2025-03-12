@@ -9,7 +9,7 @@ scene.background = new THREE.Color(0xa8def0);
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
-camera.position.set(0, 500, 1000);
+camera.position.set(0, 1500, 1000);
 
 // RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -61,18 +61,32 @@ function onWindowResize() {
 }
 window.addEventListener('resize', onWindowResize);
 
-// AGENT
-const agentHeight = 40.0;
-const agentRadius = 20.0;
-const agent = new THREE.Mesh(
-    new THREE.CylinderGeometry(agentRadius, agentRadius, agentHeight), 
+// AGENT 1
+const agentHeight1 = 40.0;
+const agentRadius1 = 20.0;
+const agent1 = new THREE.Mesh(
+    new THREE.CylinderGeometry(agentRadius1, agentRadius1, agentHeight1), 
     new THREE.MeshPhongMaterial({ color: 'green' })
 );
-agent.position.set(0, -27, 0); // Approximately at the navmesh height
-const agentGroup = new THREE.Group();
-agentGroup.add(agent);
-agentGroup.position.set(0, 0, 500);
-scene.add(agentGroup);
+agent1.position.set(0, -27, 0); // Approximately at the navmesh height
+const agentGroup1 = new THREE.Group();
+agentGroup1.add(agent1);
+agentGroup1.position.set(0, 0, 500);
+scene.add(agentGroup1);
+
+// AGENT 2
+const agentHeight2 = 40.0;
+const agentRadius2 = 20.0;
+const agent2 = new THREE.Mesh(
+    new THREE.CylinderGeometry(agentRadius2, agentRadius2, agentHeight2), 
+    new THREE.MeshPhongMaterial({ color: 'red' })
+);
+agent2.position.set(0, -27, 0); // Approximately at the navmesh height
+const agentGroup2 = new THREE.Group();
+agentGroup2.add(agent2);
+agentGroup2.position.set(0, 0, 0);
+agentGroup2.visible = false; // Set agent2 invisible initially
+scene.add(agentGroup2);
 
 // INITIALIZE THREE-PATHFINDING
 const pathfinding = new Pathfinding();
@@ -93,7 +107,7 @@ function intersect(pos) {
     return raycaster.intersectObjects(scene.children);
 }
 
-// Modify the click event listener
+// Replace the click event listener with this updated version:
 window.addEventListener('click', event => {
     clickMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     clickMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -101,35 +115,58 @@ window.addEventListener('click', event => {
     const found = intersect(clickMouse);
     if (found.length > 0) {
         let target = found[0].point;
-        const agentpos = agentGroup.position.clone();
+        const agentpos = agentGroup1.position.clone();
         
-        // Define the specific area bounds
-        const specificArea = {
-            minX: 200,  // Adjust these values based on your museum layout
+        // Define the areas
+        const navmeshArea = {
+            minX: 200,
             maxX: 400,
             minZ: 200,
             maxZ: 400
         };
 
-        // Check if click is within specific area
-        const isInSpecificArea = (
-            target.x >= specificArea.minX && 
-            target.x <= specificArea.maxX && 
-            target.z >= specificArea.minZ && 
-            target.z <= specificArea.maxZ
+        const agent2Area = {
+            minX: -400,  // Adjust these values for your second area
+            maxX: -200,
+            minZ: -400,
+            maxZ: -200
+        };
+
+        // Check which area was clicked
+        const isInNavmeshArea = (
+            target.x >= navmeshArea.minX && 
+            target.x <= navmeshArea.maxX && 
+            target.z >= navmeshArea.minZ && 
+            target.z <= navmeshArea.maxZ
+        );
+
+        const isInAgent2Area = (
+            target.x >= agent2Area.minX && 
+            target.x <= agent2Area.maxX && 
+            target.z >= agent2Area.minZ && 
+            target.z <= agent2Area.maxZ
         );
         
-        // Only show navmesh if click is in specific area
-        if (navmesh && isInSpecificArea) {
+        // Handle navmesh area click
+        if (navmesh && isInNavmeshArea) {
             navmesh.visible = true;
+            agentGroup2.visible = false; // Hide agent2 when navmesh becomes visible
+        }
+        
+        // Handle agent2 area click
+        if (isInAgent2Area) {
+            if (navmesh) navmesh.visible = false;
+            agentGroup2.visible = true;
         }
         
         // Debug information
         console.log("Click detected at:", target);
         console.log("Agent position:", agentpos);
-        console.log("Is in specific area:", isInSpecificArea);
+        console.log("Is in navmesh area:", isInNavmeshArea);
+        console.log("Is in agent2 area:", isInAgent2Area);
         
-        if (navmesh) {
+        // Only proceed with pathfinding if navmesh is visible
+        if (navmesh && navmesh.visible) {
             try {
                 groupID = pathfinding.getGroup(ZONE, agentpos);
                 console.log("Group ID:", groupID);
