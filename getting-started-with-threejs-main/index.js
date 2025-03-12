@@ -203,6 +203,15 @@ fbxloader.load('1.fbx', (object) => {
             navmesh.visible = false;
             console.log("Found navmesh mesh:", navmesh);
             
+            // Apply same material style with yellow color
+            navmesh.material = new THREE.MeshLambertMaterial({
+                color: 0xffff00,  // Bright yellow
+                flatShading: true,
+                side: THREE.DoubleSide
+            });
+            navmesh.castShadow = true;
+            navmesh.receiveShadow = true;
+            
             try {
                 const zoneData = Pathfinding.createZone(navmesh.geometry);
                 console.log("Zone data created:", zoneData);
