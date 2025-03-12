@@ -111,7 +111,22 @@ function intersect(pos) {
     return raycaster.intersectObjects(scene.children);
 }
 
-// Replace the click event listener with this updated version:
+// Button controls for visibility
+document.getElementById('button1').addEventListener('click', () => {
+    if (navmesh) {
+        navmesh.visible = true;
+        agentGroup2.visible = false; // Hide agent2 when navmesh becomes visible
+    }
+});
+
+document.getElementById('button2').addEventListener('click', () => {
+    if (navmesh) {
+        navmesh.visible = false;
+    }
+    agentGroup2.visible = true;
+});
+
+// Keep the click event listener for pathfinding, but simplified
 window.addEventListener('click', event => {
     clickMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     clickMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -121,66 +136,15 @@ window.addEventListener('click', event => {
         let target = found[0].point;
         const agentpos = agentGroup1.position.clone();
         
-        // Define the areas
-        const navmeshArea = {
-            minX: 200,
-            maxX: 400,
-            minZ: 200,
-            maxZ: 400
-        };
-
-        const agent2Area = {
-            minX: -400,  // Adjust these values for your second area
-            maxX: -200,
-            minZ: -400,
-            maxZ: -200
-        };
-
-        // Check which area was clicked
-        const isInNavmeshArea = (
-            target.x >= navmeshArea.minX && 
-            target.x <= navmeshArea.maxX && 
-            target.z >= navmeshArea.minZ && 
-            target.z <= navmeshArea.maxZ
-        );
-
-        const isInAgent2Area = (
-            target.x >= agent2Area.minX && 
-            target.x <= agent2Area.maxX && 
-            target.z >= agent2Area.minZ && 
-            target.z <= agent2Area.maxZ
-        );
-        
-        // Handle navmesh area click
-        if (navmesh && isInNavmeshArea) {
-            navmesh.visible = true;
-            agentGroup2.visible = false; // Hide agent2 when navmesh becomes visible
-        }
-        
-        // Handle agent2 area click
-        if (isInAgent2Area) {
-            if (navmesh) navmesh.visible = false;
-            agentGroup2.visible = true;
-        }
-        
-        // Debug information
-        console.log("Click detected at:", target);
-        console.log("Agent position:", agentpos);
-        console.log("Is in navmesh area:", isInNavmeshArea);
-        console.log("Is in agent2 area:", isInAgent2Area);
-        
         // Only proceed with pathfinding if navmesh is visible
         if (navmesh && navmesh.visible) {
             try {
                 groupID = pathfinding.getGroup(ZONE, agentpos);
-                console.log("Group ID:", groupID);
                 
-                // Find closest node to agent, just in case agent is out of bounds
+                // Find closest node to agent
                 const closest = pathfinding.getClosestNode(agentpos, ZONE, groupID);
-                console.log("Closest node:", closest);
                 
                 navpath = pathfinding.findPath(closest.centroid, target, ZONE, groupID);
-                console.log("Path found:", navpath);
                 
                 if (navpath) {
                     pathfindingHelper.reset();
@@ -191,8 +155,6 @@ window.addEventListener('click', event => {
             } catch (error) {
                 console.error("Pathfinding error:", error);
             }
-        } else {
-            console.warn("Navmesh not available yet");
         }
     }
 });
