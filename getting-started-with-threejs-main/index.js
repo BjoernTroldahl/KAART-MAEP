@@ -95,7 +95,6 @@ function intersect(pos) {
 
 // Modify the click event listener
 window.addEventListener('click', event => {
-    // THREE RAYCASTER
     clickMouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     clickMouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     
@@ -104,14 +103,31 @@ window.addEventListener('click', event => {
         let target = found[0].point;
         const agentpos = agentGroup.position.clone();
         
-        // Show navmesh when clicking on the museum model
-        if (navmesh) {
+        // Define the specific area bounds
+        const specificArea = {
+            minX: 200,  // Adjust these values based on your museum layout
+            maxX: 400,
+            minZ: 200,
+            maxZ: 400
+        };
+
+        // Check if click is within specific area
+        const isInSpecificArea = (
+            target.x >= specificArea.minX && 
+            target.x <= specificArea.maxX && 
+            target.z >= specificArea.minZ && 
+            target.z <= specificArea.maxZ
+        );
+        
+        // Only show navmesh if click is in specific area
+        if (navmesh && isInSpecificArea) {
             navmesh.visible = true;
         }
         
         // Debug information
         console.log("Click detected at:", target);
         console.log("Agent position:", agentpos);
+        console.log("Is in specific area:", isInSpecificArea);
         
         if (navmesh) {
             try {
