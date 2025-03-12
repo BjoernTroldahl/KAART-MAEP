@@ -53,13 +53,13 @@ document.getElementById('resetCamera').addEventListener('click', () => {
 controls.update();
 
 // LIGHTS
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
-hemiLight.position.set(0, 10, 0);
-scene.add(hemiLight);
+// Soft ambient light
+const aLight = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(aLight);
 
-const dLight = new THREE.DirectionalLight('white', 1);
-dLight.position.x = 20;
-dLight.position.y = 500;
+// Main directional light
+const dLight = new THREE.DirectionalLight(0xffffff, 0.5);
+dLight.position.set(500, 800, 500);
 dLight.castShadow = true;
 dLight.shadow.mapSize.width = 4096;
 dLight.shadow.mapSize.height = 4096;
@@ -69,9 +69,6 @@ dLight.shadow.camera.right = d;
 dLight.shadow.camera.top = d;
 dLight.shadow.camera.bottom = -d;
 scene.add(dLight);
-
-const aLight = new THREE.AmbientLight('white', 1);
-scene.add(aLight);
 
 // RESIZE HANDLER
 function onWindowResize() {
@@ -229,6 +226,12 @@ fbxloader.load('1.fbx', (object) => {
         console.log("Main model loaded");
         object.traverse((child) => {
             if (child.isMesh) {
+                // Replace material with non-reflective material
+                child.material = new THREE.MeshLambertMaterial({
+                    color: 0xfbc9c7,
+                    flatShading: true,
+                    side: THREE.DoubleSide
+                });
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
