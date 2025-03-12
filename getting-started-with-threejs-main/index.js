@@ -8,7 +8,7 @@ scene.background = new THREE.Color(0xa8def0);
 
 // CAMERA
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
-camera.position.set(0, 800, 300);
+camera.position.set(0, 1000, 300);
 
 // RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -33,7 +33,7 @@ controls.minPolarAngle = 0;
 
 // Store initial camera position for reset
 const initialCameraPosition = {
-    position: new THREE.Vector3(0, 800, 300),
+    position: new THREE.Vector3(0, 1000, 300),
     target: new THREE.Vector3(0, 0, 0)
 };
 
