@@ -134,7 +134,7 @@ for (let i = 1; i <= 26; i++) {
             // Calculate camera position above the model
             const newCameraPosition = new THREE.Vector3(
                 center.x,
-                800, // Fixed height for top-down view
+                700, // Fixed height for top-down view
                 center.z
             );
 
