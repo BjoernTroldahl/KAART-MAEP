@@ -55,9 +55,13 @@ body {
 }
 
 #button-container {
-  position: absolute;
-  top: 30px;
-  right: 10px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  position: fixed;
+  top: 30px;    
+  left: 80%;    
+  transform: translateX(-50%);
   z-index: 100;
 }
 
@@ -70,4 +74,10 @@ body {
   border-radius: 5px;
   cursor: pointer;
   margin-right: 5px;
+}
+
+button {
+  padding: 5px 10px;
+  margin: 2px;
+  cursor: pointer;
 }

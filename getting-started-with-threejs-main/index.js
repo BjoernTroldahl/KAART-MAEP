@@ -38,7 +38,7 @@ const initialCameraPosition = {
 };
 
 // Variables for models
-let model1, model2, model3, model4, model5;
+let models = new Array(26).fill(null);
 
 // LIGHTS
 const aLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -73,90 +73,24 @@ scene.add(agentGroup1);
 const fbxloader = new FBXLoader();
 
 // Load all models
-fbxloader.load('1.fbx', (object) => {
-    model1 = object;
-    model1.traverse((child) => {
-        if (child.isMesh) {
-            child.material = new THREE.MeshLambertMaterial({
-                color: 0xffff00,
-                flatShading: true,
-                side: THREE.DoubleSide
-            });
-            child.castShadow = true;
-            child.receiveShadow = true;
-        }
+for (let i = 1; i <= 26; i++) {
+    fbxloader.load(`${i}.fbx`, (object) => {
+        models[i-1] = object;
+        object.traverse((child) => {
+            if (child.isMesh) {
+                child.material = new THREE.MeshLambertMaterial({
+                    color: 0xffff00,
+                    flatShading: true,
+                    side: THREE.DoubleSide
+                });
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        object.visible = false;
+        scene.add(object);
     });
-    model1.visible = false;
-    scene.add(model1);
-});
-
-fbxloader.load('2.fbx', (object) => {
-    model2 = object;
-    model2.traverse((child) => {
-        if (child.isMesh) {
-            child.material = new THREE.MeshLambertMaterial({
-                color: 0xffff00,
-                flatShading: true,
-                side: THREE.DoubleSide
-            });
-            child.castShadow = true;
-            child.receiveShadow = true;
-        }
-    });
-    model2.visible = false;
-    scene.add(model2);
-});
-
-fbxloader.load('3.fbx', (object) => {
-    model3 = object;
-    model3.traverse((child) => {
-        if (child.isMesh) {
-            child.material = new THREE.MeshLambertMaterial({
-                color: 0xffff00,
-                flatShading: true,
-                side: THREE.DoubleSide
-            });
-            child.castShadow = true;
-            child.receiveShadow = true;
-        }
-    });
-    model3.visible = false;
-    scene.add(model3);
-});
-
-fbxloader.load('4.fbx', (object) => {
-    model4 = object;
-    model4.traverse((child) => {
-        if (child.isMesh) {
-            child.material = new THREE.MeshLambertMaterial({
-                color: 0xffff00,
-                flatShading: true,
-                side: THREE.DoubleSide
-            });
-            child.castShadow = true;
-            child.receiveShadow = true;
-        }
-    });
-    model4.visible = false;
-    scene.add(model4);
-});
-
-fbxloader.load('5.fbx', (object) => {
-    model5 = object;
-    model5.traverse((child) => {
-        if (child.isMesh) {
-            child.material = new THREE.MeshLambertMaterial({
-                color: 0xffff00,
-                flatShading: true,
-                side: THREE.DoubleSide
-            });
-            child.castShadow = true;
-            child.receiveShadow = true;
-        }
-    });
-    model5.visible = false;
-    scene.add(model5);
-});
+}
 
 // Load museum model
 fbxloader.load('museum.fbx', (object) => {
@@ -175,66 +109,28 @@ fbxloader.load('museum.fbx', (object) => {
 });
 
 // Button controls for visibility
-document.getElementById('button1').addEventListener('click', () => {
-    if (model1) {
-        model1.visible = true;
-        model2.visible = false;
-        model3.visible = false;
-        model4.visible = false;
-        model5.visible = false;
-    }
-});
-
-document.getElementById('button2').addEventListener('click', () => {
-    if (model2) {
-        model1.visible = false;
-        model2.visible = true;
-        model3.visible = false;
-        model4.visible = false;
-        model5.visible = false;
-    }
-});
-
-document.getElementById('button3').addEventListener('click', () => {
-    if (model3) {
-        model1.visible = false;
-        model2.visible = false;
-        model3.visible = true;
-        model4.visible = false;
-        model5.visible = false;
-    }
-});
-
-document.getElementById('button4').addEventListener('click', () => {
-    if (model4) {
-        model1.visible = false;
-        model2.visible = false;
-        model3.visible = false;
-        model4.visible = true;
-        model5.visible = false;
-    }
-});
-
-document.getElementById('button5').addEventListener('click', () => {
-    if (model5) {
-        model1.visible = false;
-        model2.visible = false;
-        model3.visible = false;
-        model4.visible = false;
-        model5.visible = true;
-    }
-});
+for (let i = 1; i <= 26; i++) {
+    document.getElementById(`button${i}`).addEventListener('click', () => {
+        if (models[i-1]) {
+            // Hide all models first
+            models.forEach(model => {
+                if (model) model.visible = false;
+            });
+            // Show only the selected model
+            models[i-1].visible = true;
+        }
+    });
+}
 
 // Reset camera function
 document.getElementById('resetCamera').addEventListener('click', () => {
     camera.position.copy(initialCameraPosition.position);
     controls.target.copy(initialCameraPosition.target);
     controls.update();
-    if (model1) model1.visible = false;
-    if (model2) model2.visible = false;
-    if (model3) model3.visible = false;
-    if (model4) model4.visible = false;
-    if (model5) model5.visible = false;
+    // Hide all models
+    models.forEach(model => {
+        if (model) model.visible = false;
+    });
 });
 
 // RESIZE HANDLER
