@@ -130,8 +130,8 @@ button {
 
 .menu-section button:not(#resetCamera) {
   padding: 0; /* Remove padding to allow image to fill */
-  width: 10vh; /* Force square aspect ratio */
-  height: 10vh;
+  width: 15vh; /* Force square aspect ratio */
+  height: 15vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -148,7 +148,7 @@ button {
   position: fixed;
   right: 0;
   top: 0;
-  width: 10vh;
+  width: 15vh;
   padding: 20px;
   transition: opacity 0.3s ease-in-out;
 }
@@ -160,8 +160,8 @@ button {
 
 .main-menu button:not(#resetCamera) {
   padding: 0; /* Remove padding to allow image to fill */
-  width: 10vh; /* Force square aspect ratio */
-  height: 10vh;
+  width: 15vh; /* Force square aspect ratio */
+  height: 15vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -198,8 +198,8 @@ button {
 .menu-section button:not(#resetCamera),
 .main-menu button:not(#resetCamera) {
   padding: 0;
-  width: 10vh;
-  height: 10vh;
+  width: 15vh;
+  height: 15vh;
   display: flex;
   align-items: center;
   justify-content: center;
