@@ -7,8 +7,8 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);
 
 // CAMERA
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
-camera.position.set(0, 1000, 300);
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 3000);
+camera.position.set(0, 1000, 0); // Changed from 1000 to 500 to be closer to museum
 
 // RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -25,15 +25,13 @@ controls.mouseButtons = {
     RIGHT: THREE.MOUSE.PAN
 };
 controls.enableDamping = true;
-controls.enablePan = true;
-controls.minDistance = 200;
-controls.maxDistance = 3000;
-controls.maxPolarAngle = Math.PI / 2;
-controls.minPolarAngle = 0;
+controls.enablePan = false; // Disable panning
+controls.enableRotate = false; // Disable rotation
+controls.enableZoom = false; // Disable zoom
 
 // Store initial camera position for reset
 const initialCameraPosition = {
-    position: new THREE.Vector3(0, 1000, 300),
+    position: new THREE.Vector3(0, 1000, 0), // Changed from 2000 to 500
     target: new THREE.Vector3(0, 0, 0)
 };
 
@@ -41,24 +39,34 @@ const initialCameraPosition = {
 let models = new Array(26).fill(null);
 
 // LIGHTS
-const aLight = new THREE.AmbientLight(0xffffff, 0.6);
+// Increase ambient light slightly
+const aLight = new THREE.AmbientLight(0xffffff, 0.4);
 scene.add(aLight);
 
-const dLight = new THREE.DirectionalLight(0xffffff, 0.5);
-dLight.position.set(500, 800, 500);
+// Main directional light for sharp shadows
+const dLight = new THREE.DirectionalLight(0xffffff, 1.0); // Increased intensity
+dLight.position.set(0, 1000, 0); // Moved directly above for top-down shadows
 dLight.castShadow = true;
 dLight.shadow.mapSize.width = 4096;
 dLight.shadow.mapSize.height = 4096;
+dLight.shadow.camera.near = 1;
+dLight.shadow.camera.far = 2000;
 const d = 1000;
 dLight.shadow.camera.left = -d;
 dLight.shadow.camera.right = d;
 dLight.shadow.camera.top = d;
 dLight.shadow.camera.bottom = -d;
+dLight.shadow.bias = -0.001; // Reduce shadow artifacts
 scene.add(dLight);
+
+// Add secondary directional light for softer shadows
+const dLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
+dLight2.position.set(500, 800, 500);
+scene.add(dLight2);
 
 // AGENT 1
 const agentHeight1 = 15.0;
-const agentRadius1 = 5.0;
+const agentRadius1 = 8.0;
 const agent1 = new THREE.Mesh(
     new THREE.CylinderGeometry(agentRadius1, agentRadius1, agentHeight1), 
     new THREE.MeshPhongMaterial({ color: 'green' })
@@ -66,7 +74,7 @@ const agent1 = new THREE.Mesh(
 agent1.position.set(0, 0, 0); // Approximately at the navmesh height
 const agentGroup1 = new THREE.Group();
 agentGroup1.add(agent1);
-agentGroup1.position.set(0, 0, 260);
+agentGroup1.position.set(0, 0, 250);
 scene.add(agentGroup1);
 
 // Load models
@@ -97,7 +105,7 @@ fbxloader.load('museum.fbx', (object) => {
     object.traverse((child) => {
         if (child.isMesh) {
             child.material = new THREE.MeshLambertMaterial({
-                color: 0xfbc9c7,
+                color: 0x242c5c,
                 flatShading: true,
                 side: THREE.DoubleSide
             });
@@ -108,7 +116,7 @@ fbxloader.load('museum.fbx', (object) => {
     scene.add(object);
 });
 
-// Button controls for visibility
+// Button controls for visibility and camera movement
 for (let i = 1; i <= 26; i++) {
     document.getElementById(`button${i}`).addEventListener('click', () => {
         if (models[i-1]) {
@@ -118,6 +126,43 @@ for (let i = 1; i <= 26; i++) {
             });
             // Show only the selected model
             models[i-1].visible = true;
+
+            // Get the position of the selected model
+            const boundingBox = new THREE.Box3().setFromObject(models[i-1]);
+            const center = boundingBox.getCenter(new THREE.Vector3());
+
+            // Calculate camera position above the model
+            const newCameraPosition = new THREE.Vector3(
+                center.x,
+                800, // Fixed height for top-down view
+                center.z
+            );
+
+            // Animate camera movement
+            const duration = 1; // 1 second
+            const startPosition = camera.position.clone();
+            const startTime = Date.now();
+
+            function animateCamera() {
+                const now = Date.now();
+                const progress = Math.min((now - startTime) / duration, 1);
+                
+                // Use easing function for smooth movement
+                const easeProgress = progress * (2 - progress);
+
+                // Interpolate camera position
+                camera.position.lerpVectors(startPosition, newCameraPosition, easeProgress);
+                
+                // Update controls target
+                controls.target.lerp(center, easeProgress);
+                controls.update();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateCamera);
+                }
+            }
+
+            animateCamera();
         }
     });
 }
