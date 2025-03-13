@@ -139,124 +139,40 @@ document.getElementById('BIG5').addEventListener('click', showSection5);
 document.getElementById('return5').addEventListener('click', showMainMenu);
 
 function showSection1() {
-    document.getElementById('button1').style.display = 'grid';
-    document.getElementById('button2').style.display = 'grid';
-    document.getElementById('button3').style.display = 'grid';
-    document.getElementById('button4').style.display = 'grid';
-    document.getElementById('button5').style.display = 'grid';
-    document.getElementById('return1').style.display = 'grid';
-
-    document.getElementById('BIG1').style.display = 'none';
-    document.getElementById('BIG2').style.display = 'none';
-    document.getElementById('BIG3').style.display = 'none';
-    document.getElementById('BIG4').style.display = 'none';
-    document.getElementById('BIG5').style.display = 'none';
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('section1').classList.add('active');
 }
 
 function showSection2() {
-    document.getElementById('button6').style.display = 'grid';
-    document.getElementById('button7').style.display = 'grid';
-    document.getElementById('button8').style.display = 'grid';
-    document.getElementById('button9').style.display = 'grid';
-    document.getElementById('button10').style.display = 'grid';
-    document.getElementById('return2').style.display = 'grid';
-
-    document.getElementById('BIG1').style.display = 'none';
-    document.getElementById('BIG2').style.display = 'none';
-    document.getElementById('BIG3').style.display = 'none';
-    document.getElementById('BIG4').style.display = 'none';
-    document.getElementById('BIG5').style.display = 'none';
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('section2').classList.add('active');
 }
 
 function showSection3() {
-    document.getElementById('button11').style.display = 'grid';
-    document.getElementById('button12').style.display = 'grid';
-    document.getElementById('button13').style.display = 'grid';
-    document.getElementById('button14').style.display = 'grid';
-    document.getElementById('button15').style.display = 'grid';
-    document.getElementById('button16').style.display = 'grid';
-    document.getElementById('return3').style.display = 'grid';
-
-    document.getElementById('BIG1').style.display = 'none';
-    document.getElementById('BIG2').style.display = 'none';
-    document.getElementById('BIG3').style.display = 'none';
-    document.getElementById('BIG4').style.display = 'none';
-    document.getElementById('BIG5').style.display = 'none';
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('section3').classList.add('active');
 }
 
 function showSection4() {
-    document.getElementById('button17').style.display = 'grid';
-    document.getElementById('button18').style.display = 'grid';
-    document.getElementById('button19').style.display = 'grid';
-    document.getElementById('button20').style.display = 'grid';
-    document.getElementById('button21').style.display = 'grid';
-    document.getElementById('return4').style.display = 'grid';
-
-    document.getElementById('BIG1').style.display = 'none';
-    document.getElementById('BIG2').style.display = 'none';
-    document.getElementById('BIG3').style.display = 'none';
-    document.getElementById('BIG4').style.display = 'none';
-    document.getElementById('BIG5').style.display = 'none';
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('section4').classList.add('active');
 }
 
 function showSection5() {
-    document.getElementById('button22').style.display = 'grid';
-    document.getElementById('button23').style.display = 'grid';
-    document.getElementById('button24').style.display = 'grid';
-    document.getElementById('button25').style.display = 'grid';
-    document.getElementById('button26').style.display = 'grid';
-    document.getElementById('return5').style.display = 'grid';
-
-    document.getElementById('BIG1').style.display = 'none';
-    document.getElementById('BIG2').style.display = 'none';
-    document.getElementById('BIG3').style.display = 'none';
-    document.getElementById('BIG4').style.display = 'none';
-    document.getElementById('BIG5').style.display = 'none';
+    document.getElementById('mainMenu').classList.add('hidden');
+    document.getElementById('section5').classList.add('active');
 }
 
-// Menu control functions
 function showMainMenu() {
-    document.getElementById('button1').style.display = 'none';
-    document.getElementById('button2').style.display = 'none';
-    document.getElementById('button3').style.display = 'none';
-    document.getElementById('button4').style.display = 'none';
-    document.getElementById('button5').style.display = 'none';
-    document.getElementById('return1').style.display = 'none';
-
-    document.getElementById('button6').style.display = 'none';
-    document.getElementById('button7').style.display = 'none';
-    document.getElementById('button8').style.display = 'none';
-    document.getElementById('button9').style.display = 'none';
-    document.getElementById('button10').style.display = 'none';
-    document.getElementById('return2').style.display = 'none';
-
-    document.getElementById('button11').style.display = 'none';
-    document.getElementById('button12').style.display = 'none';
-    document.getElementById('button13').style.display = 'none';
-    document.getElementById('button14').style.display = 'none';
-    document.getElementById('button15').style.display = 'none';
-    document.getElementById('button16').style.display = 'none';
-    document.getElementById('return3').style.display = 'none';
-
-    document.getElementById('button17').style.display = 'none';
-    document.getElementById('button18').style.display = 'none';
-    document.getElementById('button19').style.display = 'none';
-    document.getElementById('button20').style.display = 'none';
-    document.getElementById('return4').style.display = 'none';
-
-    document.getElementById('button21').style.display = 'none';
-    document.getElementById('button22').style.display = 'none';
-    document.getElementById('button23').style.display = 'none';
-    document.getElementById('button24').style.display = 'none';
-    document.getElementById('button25').style.display = 'none';
-    document.getElementById('button26').style.display = 'none';
-    document.getElementById('return5').style.display = 'none';
-
-    document.getElementById('BIG1').style.display = 'grid';
-    document.getElementById('BIG2').style.display = 'grid';
-    document.getElementById('BIG3').style.display = 'grid';
-    document.getElementById('BIG4').style.display = 'grid';
-    document.getElementById('BIG5').style.display = 'grid';
+    // Remove active class from all sections
+    document.querySelectorAll('.menu-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show main menu with slight delay
+    setTimeout(() => {
+        document.getElementById('mainMenu').classList.remove('hidden');
+    }, 300); // Match this with CSS transition duration
 }
 
 // Reset camera function

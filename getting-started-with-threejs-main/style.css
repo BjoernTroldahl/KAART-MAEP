@@ -55,45 +55,159 @@ body {
 }
 
 #button-container {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
+  display: flex;
+  flex-direction: column;
+  object-fit: contain;
+  gap: 10px;
   position: fixed;
   top: 30px;    
-  left: 80%;    
-  transform: translateX(-50%);
+  right: 20px;    
   z-index: 100;
 }
 
 #button-container button {
-  /*padding: 8px 15px;*/
   font-size: 16px;
   border: none;
   background-color: #444;
   color: white;
   border-radius: 5px;
   cursor: pointer;
-  margin-right: 5px;
+  margin: 5px 0;
+  /* Remove width/height definitions to let the above rule take precedence */
 }
 
 #button1 {
-  padding: 0px;
-  width: auto;
-  height: auto;
+  padding: 0; /* Remove padding to allow image to fill */
+  width: 10vh; /* Force square aspect ratio */
+  height: 10vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  object-fit: contain;
   overflow: hidden;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 0;
 }
 
 .button-image {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 100%; /* Reduce to ensure image is smaller than button */
+  max-height: 100%; /* Reduce to ensure image is smaller than button */
+  width: auto;
+  height: auto;
   object-fit: contain;
+  display: block; /* Remove any inline spacing */
 }
 
 button {
   padding: 5px 10px;
   margin: 2px;
+  object-fit: contain;
+  align-items: center;
   cursor: pointer;
+}
+
+.menu-section {
+  position: fixed;
+  right: -600px; /* Start off-screen */
+  top: 0;
+  width: auto;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.9);
+  transition: right 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-section.active {
+  right: 0;
+}
+
+.menu-section button:not(#resetCamera) {
+  padding: 0; /* Remove padding to allow image to fill */
+  width: 10vh; /* Force square aspect ratio */
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+.main-menu {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 10vh;
+  padding: 20px;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.main-menu.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.main-menu button:not(#resetCamera) {
+  padding: 0; /* Remove padding to allow image to fill */
+  width: 10vh; /* Force square aspect ratio */
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+#resetCamera {
+  position: fixed;
+  left: 75%;
+  transform: translateX(-50%);
+  top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 100;
+  width: 150px;
+}
+
+#resetCamera:hover {
+  background-color: #555;
+}
+
+#button1, 
+.menu-section button:not(#resetCamera),
+.main-menu button:not(#resetCamera) {
+  padding: 0;
+  width: 10vh;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 0;
 }
