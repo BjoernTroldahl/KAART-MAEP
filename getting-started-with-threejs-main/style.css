@@ -179,7 +179,7 @@ button {
 
 #resetCamera {
   position: fixed;
-  left: 80%;
+  left: 75%;
   transform: translateX(-50%);
   top: 6vh;
   padding: 10px 20px;
@@ -231,7 +231,7 @@ button {
 #location-indicator {
     position: fixed;
     top: 3vh;
-    left: 80%;
+    left: 75%;
     transform: translateX(-50%);
     color: #219752;
     font-size: 18px;
