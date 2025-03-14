@@ -1,1 +1,1 @@
-# getting-started-with-threejs
+# Digital 3D Map of Design Museum Danmark

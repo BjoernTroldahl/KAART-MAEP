@@ -82,7 +82,7 @@ const fbxloader = new FBXLoader();
 
 // Load all models
 for (let i = 1; i <= 26; i++) {
-    fbxloader.load(`${i}.fbx`, (object) => {
+    fbxloader.load(`assets/3D-path/${i}.fbx`, (object) => {
         models[i-1] = object;
         object.traverse((child) => {
             if (child.isMesh) {
@@ -101,7 +101,7 @@ for (let i = 1; i <= 26; i++) {
 }
 
 // Load museum model
-fbxloader.load('museum.fbx', (object) => {
+fbxloader.load('assets/3D/museum.fbx', (object) => {
     object.traverse((child) => {
         if (child.isMesh) {
             child.material = new THREE.MeshLambertMaterial({
